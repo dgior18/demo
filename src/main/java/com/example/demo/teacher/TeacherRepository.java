@@ -1,5 +1,6 @@
 package com.example.demo.teacher;
 
+import com.example.demo.group.Class;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -18,11 +19,26 @@ public interface TeacherRepository
 
 
     Optional<Teacher> findByIdNumber(Long idNumber);
+
     Optional<Teacher> findByEmail(String email);
+
     List<Teacher> findByFirstName(String firstName);
+
     List<Teacher> findByLastName(String lastName);
+
     List<Teacher> findByDateOfBirth(LocalDate localDate);
 
+    @Transactional
+    @Modifying
+    @Query("UPDATE Teacher  t " +
+            "SET t.group = :group WHERE t.idNumber = :idNumber")
+    int addTeacherIntoGroup(@Param(value = "group") Class group, @Param(value = "idNumber") Long idNumber);
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE Teacher  t " +
+            "SET t.group = null WHERE t.idNumber = :idNumber and t.group= :group")
+    int deleteTeacherFromGroup(@Param(value = "group") Class group, @Param(value = "idNumber") Long idNumber);
 
     @Transactional
     @Modifying
@@ -52,6 +68,6 @@ public interface TeacherRepository
     @Modifying
     @Query("UPDATE Teacher  t " +
             "SET t.dateOfBirth = :dateOfBirth WHERE t.idNumber = :idNumber")
-    int updateDOB(@Param(value = "dateOfBirth") String dateOfBirth , @Param(value = "idNumber") Long idNumber);
+    int updateDOB(@Param(value = "dateOfBirth") String dateOfBirth, @Param(value = "idNumber") Long idNumber);
 
 }

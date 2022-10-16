@@ -20,6 +20,12 @@ public class TeacherController {
         return teacherService.addTeacher(request);
     }
 
+    @PostMapping("/add/teacher/group")
+    public String addStudentIntoGroup(@RequestParam("teacherIdNumber") Long teacherIdNumber,
+                                      @RequestParam("groupId") Long groupId) {
+        return teacherService.addTeacherIntoGroup(teacherIdNumber, groupId);
+    }
+
     @PatchMapping("/edit/teacher/name")
     public String editTeacherName(@RequestParam("firstName") String firstName,
                                   @RequestParam("idNumber") Long idNumber) {
@@ -81,4 +87,9 @@ public class TeacherController {
         return teacherService.deleteTeacher(idNumber);
     }
 
+    @DeleteMapping("/delete/teacher/group")
+    public String deleteStudentFromGroup(@RequestParam("teacherIdNumber") Long teacherIdNumber,
+                                         @RequestParam("groupId") Long groupId) {
+        return teacherService.deleteTeacherFromGroup(teacherIdNumber, groupId);
+    }
 }

@@ -1,6 +1,8 @@
 package com.example.demo.student;
 
 
+import com.example.demo.group.ClassRepository;
+import com.example.demo.group.ClassService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,7 @@ public class StudentService {
             "Student with ID number %d not found";
 
     private final StudentRepository studentRepository;
+    private final ClassService classService;
 
     private void studentExist(StudentRequest request, String errorMessage) {
         boolean studentExist = studentRepository
@@ -57,6 +60,22 @@ public class StudentService {
         studentRepository.save(student);
 
         return String.format("Student with ID number %d added successfully.", request.getIdNumber());
+    }
+
+    public String addStudentIntoGroup(Long studentIdNumber, Long groupId) {
+
+        var group = classService.findByGroupId(groupId);
+        studentRepository.addStudentIntoGroup(group, studentIdNumber);
+
+        return "added student into group";
+    }
+
+    public String deleteStudentFromGroup(Long studentIdNumber, Long groupId) {
+
+        var group = classService.findByGroupId(groupId);
+        studentRepository.deleteStudentFromGroup(group, studentIdNumber);
+
+        return "Student deleted from group successfully";
     }
 
     public String deleteStudent(Long idNumber) {

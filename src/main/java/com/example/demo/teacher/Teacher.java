@@ -1,5 +1,6 @@
 package com.example.demo.teacher;
 
+import com.example.demo.group.Class;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -32,8 +33,9 @@ public class Teacher {
     @Column(unique = true)
     private String email;
     private LocalDate dateOfBirth;
-//    @ManyToOne
-//    @JoinColumn(name = "user_id")
+    @ManyToOne
+    @JoinColumn(name = "group_id")
+    private Class group;
 
     public Teacher(String firstName,
                    String lastName,

@@ -1,6 +1,7 @@
 package com.example.demo.student;
 
 
+import com.example.demo.group.Class;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -27,6 +28,18 @@ public interface StudentRepository
 
     List<Student> findByDateOfBirth(LocalDate localDate);
 
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE Student  s " +
+            "SET s.group = :group WHERE s.idNumber = :idNumber")
+    int addStudentIntoGroup(@Param(value = "group") Class group, @Param(value = "idNumber") Long idNumber);
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE Student  s " +
+            "SET s.group = null WHERE s.idNumber = :idNumber and s.group= :group")
+    int deleteStudentFromGroup(@Param(value = "group") Class group, @Param(value = "idNumber") Long idNumber);
 
     @Transactional
     @Modifying
